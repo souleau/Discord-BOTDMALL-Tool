@@ -44,6 +44,12 @@ namespace dmall
 
         private async void startdm_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(tokentextbox.Text))
+            {
+                Log("Erreur : le token est vide.");
+                return;
+            }
+
             cts = new CancellationTokenSource();
 
             discord = new DiscordClient(new DiscordConfiguration()
@@ -52,43 +58,51 @@ namespace dmall
                 TokenType = TokenType.Bot
             });
 
-            await discord.ConnectAsync();
-            
-            Log("bot connected to discord");
-
-            var guildId = ulong.Parse(guiIDtextbox.Text);
-            var guild = await discord.GetGuildAsync(guildId);
-            Log($"connected to the server: {guild.Name}");
-
-            var members = await guild.GetAllMembersAsync();
-            Log($"total number of members: {members.Count}");
-
-            foreach (var member in members)
+            try
             {
-                if (cts.Token.IsCancellationRequested)
+                await discord.ConnectAsync();
+                Log("Bot connecté à Discord");
+
+                var guildId = ulong.Parse(guiIDtextbox.Text);
+                var guild = await discord.GetGuildAsync(guildId);
+                Log($"Connecté au serveur : {guild.Name}");
+
+                var members = await guild.GetAllMembersAsync();
+                Log($"Nombre total de membres : {members.Count}");
+
+                foreach (var member in members)
                 {
-                    Log("sending of messages stopped by the user");
-                    break;
+                    if (cts.Token.IsCancellationRequested)
+                    {
+                        Log("Envoi des messages arrêté par l'utilisateur");
+                        break;
+                    }
+
+                    if (!member.IsBot)
+                    {
+                        try
+                        {
+                            var mentionMessage = $"<@{member.Id}> {messagetextbox.Text}";
+                            await member.SendMessageAsync(mentionMessage);
+                            Log($"Message envoyé à {member.Username}#{member.Discriminator} avec mention");
+                        }
+                        catch (Exception ex)
+                        {
+                            Log($"Échec de l'envoi du message à {member.Username}#{member.Discriminator} : {ex.Message}");
+                        }
+                    }
+                    int delay = random.Next(10, 501);
+                    await Task.Delay(delay);
                 }
 
-                if (!member.IsBot)
-                {
-                    try
-                    {
-                        await member.SendMessageAsync(messagetextbox.Text);
-                        Log($"message sent to {member.Username}#{member.Discriminator}");
-                    }
-                    catch (Exception ex)
-                    {
-                        Log($"failed to send message to {member.Username}#{member.Discriminator}: {ex.Message}");
-                    }
-                }
-                int delay = random.Next(10, 501);
-                await Task.Delay(delay);
+                Log("Envoi des messages terminé.");
             }
-
-            Log("sending messages completed.");
+            catch (Exception ex)
+            {
+                Log($"Erreur de connexion : {ex.Message}");
+            }
         }
+
 
         private void stopdm_Click(object sender, EventArgs e)
         {
