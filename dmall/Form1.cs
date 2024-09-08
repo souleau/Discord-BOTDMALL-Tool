@@ -13,10 +13,10 @@ namespace dmall
     {
 
         public static api KeyAuthApp = new api(
-        name: "dmall", // Application Name
-        ownerid: "9lHPPXiR0P", // Owner ID
-        secret: "f204b87076f54bbec66ea00ac5ec84842a5e57dca3a4a8fa58e2ba65cd74c435", // Application Secret
-        version: "1.0" // Application Version /*
+        name: "", // Application Name
+        ownerid: "", // Owner ID
+        secret: "", // Application Secret
+        version: "" // Application Version /*
                        //path: @"Your_Path_Here" // (OPTIONAL) see tutorial here https://www.youtube.com/watch?v=I9rxt821gMk&t=1s
 
          );
@@ -61,7 +61,7 @@ namespace dmall
             try
             {
                 await discord.ConnectAsync();
-                Log("Bot connecté à Discord");
+                Log("Bot link to Discord");
 
                 var guildId = ulong.Parse(guiIDtextbox.Text);
                 var guild = await discord.GetGuildAsync(guildId);
@@ -74,7 +74,7 @@ namespace dmall
                 {
                     if (cts.Token.IsCancellationRequested)
                     {
-                        Log("Envoi des messages arrêté par l'utilisateur");
+                        Log("Envoi des messages fini");
                         break;
                     }
 
@@ -84,7 +84,7 @@ namespace dmall
                         {
                             var mentionMessage = $"<@{member.Id}> {messagetextbox.Text}";
                             await member.SendMessageAsync(mentionMessage);
-                            Log($"Message envoyé à {member.Username}#{member.Discriminator} avec mention");
+                            Log($"Message envoyé à {member.Username}#{member.Discriminator} + mention fdp");
                         }
                         catch (Exception ex)
                         {
@@ -95,7 +95,7 @@ namespace dmall
                     await Task.Delay(delay);
                 }
 
-                Log("Envoi des messages terminé.");
+                Log("Envoi des messages fini");
             }
             catch (Exception ex)
             {
@@ -112,8 +112,8 @@ namespace dmall
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            KeyAuthApp.init();
-            KeyAuthApp.check();
+           // KeyAuthApp.init();
+           // KeyAuthApp.check();
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -123,6 +123,7 @@ namespace dmall
 
         private void guna2Button2_Click(object sender, EventArgs e)
         {
+            /**
             KeyAuthApp.license(licensetextbox.Text);
             if (KeyAuthApp.response.success)
             {
@@ -133,6 +134,7 @@ namespace dmall
             {
                 Application.Exit();
             }
+            **/
         }
     }
 }

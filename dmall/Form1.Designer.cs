@@ -246,10 +246,11 @@
             // 
             this.guna2Panel2.Controls.Add(this.guna2Button2);
             this.guna2Panel2.Controls.Add(this.licensetextbox);
-            this.guna2Panel2.Location = new System.Drawing.Point(-4, -5);
+            this.guna2Panel2.Location = new System.Drawing.Point(795, -5);
             this.guna2Panel2.Name = "guna2Panel2";
-            this.guna2Panel2.Size = new System.Drawing.Size(809, 459);
+            this.guna2Panel2.Size = new System.Drawing.Size(10, 459);
             this.guna2Panel2.TabIndex = 16;
+            this.guna2Panel2.Visible = false;
             // 
             // guna2Button2
             // 
